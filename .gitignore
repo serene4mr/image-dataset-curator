@@ -1,9 +1,11 @@
-# Python
+# Python Bytecode & Cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+
+# Distribution / Packaging
 build/
 develop-eggs/
 dist/
@@ -22,17 +24,38 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Virtual Environments
+# Virtual Environments (UV & standard venv)
 .env
-.venv
+.venv/
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
 
-# Data / Filter outputs
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Data & Output directories
 output/
-rgb_filtered*/
+*_output/
+*_filtered/
+*_curated/
 filtered_*/
+curated_*/
+temp/
+tmp/
 *.log
