@@ -1,6 +1,6 @@
 # 🚀 Image Dataset Curator (`image-dataset-curator`)
 
-> **A High-Performance Multi-Stage Image Dataset Deduplication and Diversity Curation Pipeline for Computer Vision & Semantic Segmentation.**
+> **A High-Performance Multi-Stage Image Dataset Deduplication and Diversity Curation Pipeline for Computer Vision & Deep Learning (Detection, Classification, Segmentation, Robotics, Visual SLAM & Generative AI).**
 
 Fully managed with **[uv](https://github.com/astral-sh/uv)** — the ultra-fast Python package manager.
 

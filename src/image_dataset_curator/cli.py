@@ -15,7 +15,7 @@ console = Console()
 def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="image-dataset-curator",
-        description="🚀 Multi-Stage Image Dataset Deduplication and Diversity Curation for Computer Vision & Semantic Segmentation",
+        description="🚀 Multi-Stage Image Dataset Deduplication and Diversity Curation for Computer Vision & Deep Learning",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     # I/O Arguments

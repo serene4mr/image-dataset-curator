@@ -1,7 +1,7 @@
 [project]
 name = "image-dataset-curator"
 version = "0.1.0"
-description = "Multi-Stage Image Dataset Deduplication and Diversity Curation for Computer Vision & Semantic Segmentation"
+description = "Multi-Stage Image Dataset Deduplication and Diversity Curation for Computer Vision & Deep Learning"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
