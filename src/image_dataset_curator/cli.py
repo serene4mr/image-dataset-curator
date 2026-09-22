@@ -5,8 +5,8 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeRemainingColumn
-from dataset_filter.pipeline import DatasetFilteringPipeline
-from dataset_filter.utils.io import export_selected_images
+from image_dataset_curator.pipeline import DatasetFilteringPipeline
+from image_dataset_curator.utils.io import export_selected_images
 
 
 console = Console()
@@ -14,8 +14,8 @@ console = Console()
 
 def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="dataset-filter",
-        description="🚀 Multi-Stage Image Dataset Deduplication and Diversity Filtering for Computer Vision & Semantic Segmentation",
+        prog="image-dataset-curator",
+        description="🚀 Multi-Stage Image Dataset Deduplication and Diversity Curation for Computer Vision & Semantic Segmentation",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     # I/O Arguments
@@ -84,7 +84,7 @@ def main():
         f"[bold cyan]Filter Mode:[/bold cyan] [bold yellow]{args.mode.upper()}[/bold yellow] "
         f"{f'(Sensitivity: {args.auto_sensitivity})' if args.mode == 'auto' else f'(Target budget)'}"
     )
-    console.print(Panel(banner_text, title="🚀 [bold magenta]Dataset Filter Pipeline[/bold magenta]", expand=False))
+    console.print(Panel(banner_text, title="🚀 [bold magenta]Image Dataset Curator[/bold magenta]", expand=False))
 
     pipeline = DatasetFilteringPipeline(
         mode=args.mode,

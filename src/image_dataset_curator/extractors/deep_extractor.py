@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from typing import Optional
-from dataset_filter.extractors.base import BaseFeatureExtractor
+from image_dataset_curator.extractors.base import BaseFeatureExtractor
 
 try:
     import torch

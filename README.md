@@ -1,8 +1,8 @@
-# 🚀 Dataset Filter (Multi-Stage Dataset Deduplication & Diversity Pipeline)
+# 🚀 Image Dataset Curator (`image-dataset-curator`)
 
-> **Công cụ lọc trùng lặp và chọn lọc đa dạng hình ảnh đa tầng (Multi-Stage Data Curation Pipeline) cho bài toán Thị giác máy tính & Semantic Segmentation.**
+> **Công cụ tuyển chọn, lọc trùng lặp và tối ưu hóa tập dữ liệu hình ảnh đa tầng (Multi-Stage Dataset Curation Pipeline) cho bài toán Thị giác máy tính & Semantic Segmentation.**
 
-Được quản lý hoàn toàn bằng **[uv](https://github.com/astral-sh/uv)** — Package manager nhanh nhất cho Python hiện nay.
+Được quản lý hoàn toàn bằng **[uv](https://github.com/astral-sh/uv)** — Package manager nhanh nhất cho Python.
 
 ---
 
@@ -15,11 +15,13 @@
 * **Chế độ Tự Động Thích Ứng (`--mode auto`):**
   * Tự động xác định số lượng frame tối ưu dựa trên biến thiên bối cảnh thực tế (không cần người dùng đoán mò con số %).
 * **Chế độ Chỉ Định Ngân Sách (`--mode budget`):**
-  * Cho phép chọn chính xác số lượng ảnh (`--target-count 800`) hoặc phần trăm dataset (`--target-pct 5`).
+  * Cho phép chọn chính xác số lượng ảnh (`--target-count 800` / `-k 800`) hoặc phần trăm dataset (`--target-pct 5` / `-p 5`).
 * **Linh hoạt đầu ra (`--action`):**
   * `copy`: Copy ảnh đã lọc sang thư mục mới để gán nhãn.
   * `symlink`: Tạo liên kết tượng trưng (zero-disk overhead, không tốn thêm dung lượng).
   * `list`: Chỉ xuất danh sách file `selected_frames.txt` và `filter_report.json`.
+* **Đồng bộ tự động cặp RGB + Depth:**
+  * Tự động phát hiện và đồng bộ file độ sâu (`depth/frame_XXXXXX_depth.npy`) tương ứng với từng frame RGB.
 
 ---
 
@@ -45,10 +47,13 @@ App sẽ tự động phân tích và trích xuất tập frame cốt lõi khôn
 
 ```bash
 # Tự động lọc và copy sang thư mục mới
-uv run dataset-filter -i /path/to/raw_rgb -o /path/to/filtered_rgb --mode auto
+uv run image-dataset-curator -i /path/to/raw_rgb -o /path/to/filtered_rgb --mode auto
+
+# Hoặc dùng alias ngắn:
+uv run img-curator -i /path/to/raw_rgb -o /path/to/filtered_rgb --mode auto
 
 # Tùy chỉnh độ nhạy: 'high' (~8-12%), 'medium' (~4-7%), 'low' (~1-3%)
-uv run dataset-filter -i /path/to/raw_rgb -o /path/to/filtered_rgb --mode auto --auto-sensitivity high
+uv run img-curator -i /path/to/raw_rgb -o /path/to/filtered_rgb --mode auto --auto-sensitivity high
 ```
 
 ---
@@ -56,10 +61,10 @@ uv run dataset-filter -i /path/to/raw_rgb -o /path/to/filtered_rgb --mode auto -
 ### 2. Chế độ Chỉ Định Mục Tiêu (% hoặc Số Lượng Cố Định)
 ```bash
 # Lọc lấy chính xác 5% dataset (~650 ảnh)
-uv run dataset-filter -i /path/to/raw_rgb -o /path/to/filtered_rgb -p 5
+uv run img-curator -i /path/to/raw_rgb -o /path/to/filtered_rgb -p 5
 
 # Lọc lấy đúng 800 ảnh đa dạng nhất
-uv run dataset-filter -i /path/to/raw_rgb -o /path/to/filtered_rgb -k 800
+uv run img-curator -i /path/to/raw_rgb -o /path/to/filtered_rgb -k 800
 ```
 
 ---
@@ -67,7 +72,7 @@ uv run dataset-filter -i /path/to/raw_rgb -o /path/to/filtered_rgb -k 800
 ### 3. Tiết Kiệm Dung Lượng Ổ Cứng với Symlink
 Thay vì nhân bản hàng GB ảnh, tạo symlink liên kết đến ảnh gốc:
 ```bash
-uv run dataset-filter -i /path/to/raw_rgb -o /path/to/filtered_rgb --mode auto --action symlink
+uv run img-curator -i /path/to/raw_rgb -o /path/to/filtered_rgb --mode auto --action symlink
 ```
 
 ---
@@ -92,11 +97,11 @@ uv run dataset-filter -i /path/to/raw_rgb -o /path/to/filtered_rgb --mode auto -
 ## 🏗 Cấu Trúc Dự Án
 
 ```
-dataset-filter/
+image-dataset-curator/
 ├── pyproject.toml              # Cấu hình dự án & dependencies (UV)
 ├── README.md                   # Tài liệu hướng dẫn
 ├── src/
-│   └── dataset_filter/
+│   └── image_dataset_curator/
 │       ├── __init__.py
 │       ├── cli.py              # Giao diện dòng lệnh Rich CLI
 │       ├── pipeline.py         # Bộ điều phối Pipeline 3 tầng

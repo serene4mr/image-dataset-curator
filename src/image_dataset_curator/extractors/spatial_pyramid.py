@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from dataset_filter.extractors.base import BaseFeatureExtractor
+from image_dataset_curator.extractors.base import BaseFeatureExtractor
 
 
 class SpatialPyramidExtractor(BaseFeatureExtractor):

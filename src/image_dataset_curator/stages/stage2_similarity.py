@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from typing import List, Optional, Callable
-from dataset_filter.utils.metrics import compute_fast_ssim, compute_dhash, compute_hamming_distance
+from image_dataset_curator.utils.metrics import compute_fast_ssim, compute_dhash, compute_hamming_distance
 
 
 def run_stage2_similarity(

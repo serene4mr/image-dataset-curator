@@ -1,8 +1,8 @@
 import numpy as np
 from typing import List, Optional, Callable, Tuple
-from dataset_filter.extractors.base import BaseFeatureExtractor
-from dataset_filter.extractors.spatial_pyramid import SpatialPyramidExtractor
-from dataset_filter.extractors.deep_extractor import DeepModelExtractor, HAS_TORCH
+from image_dataset_curator.extractors.base import BaseFeatureExtractor
+from image_dataset_curator.extractors.spatial_pyramid import SpatialPyramidExtractor
+from image_dataset_curator.extractors.deep_extractor import DeepModelExtractor, HAS_TORCH
 
 
 def auto_sphere_packing(features: np.ndarray, similarity_threshold: float = 0.975) -> List[int]:

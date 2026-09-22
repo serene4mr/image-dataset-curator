@@ -2,9 +2,9 @@ import os
 import time
 from typing import List, Optional, Callable, Tuple
 
-from dataset_filter.stages.stage1_step import run_stage1_step
-from dataset_filter.stages.stage2_similarity import run_stage2_similarity
-from dataset_filter.stages.stage3_diversity import run_stage3_diversity
+from image_dataset_curator.stages.stage1_step import run_stage1_step
+from image_dataset_curator.stages.stage2_similarity import run_stage2_similarity
+from image_dataset_curator.stages.stage3_diversity import run_stage3_diversity
 
 
 class DatasetFilteringPipeline:

@@ -1,7 +1,7 @@
 [project]
-name = "dataset-filter"
+name = "image-dataset-curator"
 version = "0.1.0"
-description = "Multi-Stage Image Dataset Deduplication and Diversity Filtering for Computer Vision & Semantic Segmentation"
+description = "Multi-Stage Image Dataset Deduplication and Diversity Curation for Computer Vision & Semantic Segmentation"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
@@ -23,11 +23,12 @@ deep = [
     "transformers>=4.30.0",
 ]
 all = [
-    "dataset-filter[deep]",
+    "image-dataset-curator[deep]",
 ]
 
 [project.scripts]
-dataset-filter = "dataset_filter.cli:main"
+image-dataset-curator = "image_dataset_curator.cli:main"
+img-curator = "image_dataset_curator.cli:main"
 
 [build-system]
 requires = ["uv_build>=0.12.6,<0.13.0"]
