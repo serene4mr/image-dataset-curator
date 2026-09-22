@@ -23,6 +23,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 *.spec
+image-dataset-curator-*
 MANIFEST
 
 # Virtual Environments (UV & standard venv)
