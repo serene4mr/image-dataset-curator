@@ -8,6 +8,9 @@ Fully managed with **[uv](https://github.com/astral-sh/uv)** — the ultra-fast 
 
 ## 📌 Key Features
 
+* **Universal Directory Support:**
+  * Point directly to any image folder (`-i /path/to/any_folder`). All matching images (`.png`, `.jpg`, `.jpeg`, etc.) are processed directly.
+  * Curated images are saved directly into the destination directory (`-o /path/to/output_dir`).
 * **Multi-Stage Curation Pipeline:**
   * **Stage 1 (Coarse Fixed-Step Sampling):** Rapidly downsamples dense video streams to reduce initial disk I/O.
   * **Stage 2 (Sequential Similarity Filtering):** Utilizes fast Structural Similarity (SSIM) or Difference Hash (dHash) to eliminate consecutive redundant frames when the camera is stationary or moving slowly.
@@ -20,8 +23,6 @@ Fully managed with **[uv](https://github.com/astral-sh/uv)** — the ultra-fast 
   * `copy`: Exports selected frames into a clean output directory for annotation.
   * `symlink`: Creates symbolic links for instant export with zero disk storage overhead.
   * `list`: Exports `selected_frames.txt` and `filter_report.json` metadata without duplicating files.
-* **Automatic RGB + Depth Synchronization:**
-  * Automatically detects and pairs corresponding depth maps (`depth/frame_XXXXXX_depth.npy` or `.png`) from RealSense/stereo capture sessions.
 
 ---
 
@@ -47,24 +48,24 @@ Automatically analyzes visual variance and extracts the non-redundant core keyfr
 
 ```bash
 # Auto-curate and copy to output directory
-uv run image-dataset-curator -i /path/to/raw_rgb -o /path/to/curated_rgb --mode auto
+uv run image-dataset-curator -i /path/to/raw_images -o /path/to/curated_images --mode auto
 
 # Or use the short alias:
-uv run img-curator -i /path/to/raw_rgb -o /path/to/curated_rgb --mode auto
+uv run img-curator -i /path/to/raw_images -o /path/to/curated_images --mode auto
 
 # Configure auto-sensitivity: 'high' (~8-12%), 'medium' (~4-7%), 'low' (~1-3%)
-uv run img-curator -i /path/to/raw_rgb -o /path/to/curated_rgb --mode auto --auto-sensitivity high
+uv run img-curator -i /path/to/raw_images -o /path/to/curated_images --mode auto --auto-sensitivity high
 ```
 
 ---
 
 ### 2. Budget Mode (Target Percentage or Fixed Count)
 ```bash
-# Retain exactly 5% of the raw dataset (~650 images from 13k frames)
-uv run img-curator -i /path/to/raw_rgb -o /path/to/curated_rgb -p 5
+# Retain exactly 5% of the raw dataset
+uv run img-curator -i /path/to/raw_images -o /path/to/curated_images -p 5
 
 # Retain exactly 800 most diverse frames
-uv run img-curator -i /path/to/raw_rgb -o /path/to/curated_rgb -k 800
+uv run img-curator -i /path/to/raw_images -o /path/to/curated_images -k 800
 ```
 
 ---
@@ -72,7 +73,23 @@ uv run img-curator -i /path/to/raw_rgb -o /path/to/curated_rgb -k 800
 ### 3. Zero-Disk Overhead with Symlinks
 Save storage space by creating symbolic links instead of copying gigabytes of images:
 ```bash
-uv run img-curator -i /path/to/raw_rgb -o /path/to/curated_rgb --mode auto --action symlink
+uv run img-curator -i /path/to/raw_images -o /path/to/curated_images --mode auto --action symlink
+```
+
+---
+
+## 📊 Output Structure
+
+When executed, the output directory (`-o /path/to/curated_images`) will contain:
+
+```
+curated_images/
+├── frame_000000.png           # Filtered image files directly in the output directory
+├── frame_000015.png
+├── frame_000042.png
+├── ...
+├── selected_frames.txt        # Plain text list of selected frame filenames
+└── filter_report.json         # Comprehensive execution report and statistics
 ```
 
 ---
@@ -83,6 +100,7 @@ uv run img-curator -i /path/to/raw_rgb -o /path/to/curated_rgb --mode auto --act
 | :--- | :--- | :--- |
 | `-i`, `--input-dir` | Path to raw image input directory | *(Required)* |
 | `-o`, `--output-dir` | Path to destination directory | *(Required)* |
+| `--extensions` | Comma-separated image extensions to search for | `png,jpg,jpeg` |
 | `--mode` | Curation mode: `auto` or `budget` | `auto` |
 | `--auto-sensitivity` | Sensitivity in auto mode: `high`, `medium`, `low` | `medium` |
 | `-p`, `--target-pct` | Target percentage of dataset to retain (e.g. `5` for 5%) | `None` |
@@ -116,6 +134,6 @@ image-dataset-curator/
 │       │   ├── spatial_pyramid.py    # Spatial Color/Edge Histogram (Zero-GPU)
 │       │   └── deep_extractor.py     # PyTorch DINOv2 / ResNet backbone
 │       └── utils/              # Metrics and I/O utilities
-│           ├── io.py                 # Export & RGB+Depth synchronization
+│           ├── io.py                 # Direct folder export & report generation
 │           └── metrics.py            # SSIM and dHash computations
 ```
