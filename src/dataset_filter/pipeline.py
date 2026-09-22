@@ -1,19 +1,19 @@
 import os
 import time
 from typing import List, Optional, Callable, Tuple
+
 from dataset_filter.stages.stage1_step import run_stage1_step
 from dataset_filter.stages.stage2_similarity import run_stage2_similarity
 from dataset_filter.stages.stage3_diversity import run_stage3_diversity
-from dataset_filter.utils.io import export_selected_images
 
 
 class DatasetFilteringPipeline:
     """
-    Main Multi-Stage Dataset Filtering Pipeline.
+    Multi-Stage Dataset Filtering Pipeline for image directories.
     
     Stages:
-      Stage 1: Coarse Skip-Frame Subsampling
-      Stage 2: Sequential Similarity Filter (SSIM/dHash)
+      Stage 1: Coarse Skip-Frame Subsampling (Fast I/O reduction)
+      Stage 2: Sequential Similarity Filter (SSIM/dHash - removes stationary/slow-movement frames)
       Stage 3: Global Diversity & Representation (Auto Sphere-Packing or Budget FPS)
     """
     def __init__(
@@ -57,14 +57,13 @@ class DatasetFilteringPipeline:
         progress_callbacks: Optional[dict] = None
     ) -> Tuple[List[str], dict]:
         """
-        Executes pipeline over list of image paths.
+        Executes pipeline over a list of existing image file paths on disk.
         Returns: (selected_file_paths, pipeline_statistics)
         """
         total_raw = len(input_files)
         current_pool = list(input_files)
         start_time = time.time()
 
-        # Compute numerical target if budget mode
         computed_target = None
         if self.mode == 'budget':
             if self.target_pct is not None:
@@ -80,7 +79,7 @@ class DatasetFilteringPipeline:
             "stages": {}
         }
 
-        # Stage 1: Fixed Step
+        # Stage 1: Fixed Step (Coarse Skip-Frame Sampling)
         t0 = time.time()
         if self.enable_stage1 and self.stage1_step > 1:
             current_pool = run_stage1_step(current_pool, step=self.stage1_step)
@@ -93,7 +92,7 @@ class DatasetFilteringPipeline:
             if stage_callback:
                 stage_callback("Stage 1 (Fixed Step)", len(current_pool), t_stage1)
 
-        # Stage 2: Sequential Similarity
+        # Stage 2: Sequential Similarity (SSIM / dHash)
         t0 = time.time()
         if self.enable_stage2 and len(current_pool) > 1:
             cb = progress_callbacks.get("stage2") if progress_callbacks else None
@@ -113,7 +112,7 @@ class DatasetFilteringPipeline:
             if stage_callback:
                 stage_callback("Stage 2 (Sequential Similarity)", len(current_pool), t_stage2)
 
-        # Stage 3: Global Diversity
+        # Stage 3: Global Diversity & Representation
         t0 = time.time()
         if self.enable_stage3 and len(current_pool) > 1:
             cb = progress_callbacks.get("stage3") if progress_callbacks else None
