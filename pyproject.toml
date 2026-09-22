@@ -33,3 +33,13 @@ img-curator = "image_dataset_curator.cli:main"
 [build-system]
 requires = ["uv_build>=0.12.6,<0.13.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pyinstaller>=6.0.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "-p no:launch_testing -p no:launch_testing_ros -p no:launch_testing_ros_pytest_entrypoint -p no:ament_copyright -p no:ament_flake8 -p no:ament_pep257 -p no:ament_lint -p no:ament_xmllint -v"
+testpaths = ["tests"]
