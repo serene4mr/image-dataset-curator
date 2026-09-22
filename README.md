@@ -63,6 +63,8 @@ chmod +x image-dataset-curator-linux-x86_64
 image-dataset-curator-windows-x86_64.exe -i C:\data\raw_images -o C:\data\curated_images
 ```
 
+👉 **For full OS-specific installation, path setup, and troubleshooting, read the [📖 Standalone Binary User Guide](docs/STANDALONE_GUIDE.md).**
+
 ---
 
 ### Option B: Run via UV (Fastest for Python Developers)
